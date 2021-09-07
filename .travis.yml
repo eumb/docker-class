@@ -8,4 +8,16 @@ before_install:
   - docker build -t mariusb/frontend -f Dockerfile.dev .
 
 script:
-  - docker run -e CI=true mariusb/frontend npm run test -- --coverage
+  - docker run -e CI=true mariusb/frontend npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'eu-central'
+  app: 'frontend'
+  env: 'Frontend-env'
+  bucket_name: 'elasticbeanstalk-eu-central-1-746639713415'
+  bucket_path: 'frontend'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
